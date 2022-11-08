@@ -17,11 +17,11 @@ public class SQLHelper {
 
     @SneakyThrows
     private static Connection getConn() {
-        return DriverManager.getConnection("jdbc:mysql://localhost:3306/app","app","pass");
-        }
+        return DriverManager.getConnection("jdbc:mysql://localhost:3306/app", "app", "pass");
+    }
 
-    public static DataHelper.VerificationCode getVerificationCode() {
-        var requestSQL = "SELECT code FROM auth_codes ORDER BY created DESC LIMIT 1";
+    public static DataHelper.VerificationCode getVerificationCode(DataHelper.AuthInfo userInfo) {
+        var requestSQL = "SELECT code FROM auth_codes WHERE user_id = (SELECT id FROM users WHERE login = '" + userInfo.getLogin() + "') ORDER BY created DESC LIMIT 1";
         try (var conn = getConn()) {
             var result = runner.query(conn, requestSQL, new ScalarHandler<String>());
             return new DataHelper.VerificationCode(result);

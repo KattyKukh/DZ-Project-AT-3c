@@ -22,6 +22,16 @@ public class DataHelper {
         return new AuthInfo(invalidLogin, invalidPass);
     }
 
+    public static AuthInfo infoWithInvalidLogin() {
+        String invalidLogin = faker.internet().password();
+        return new AuthInfo(invalidLogin, "qwerty123");
+    }
+
+    public static AuthInfo infoWithInvalidPassword() {
+        String invalidPass = faker.internet().password();
+        return new AuthInfo("vasya", invalidPass);
+    }
+
     public static VerificationCode generateCode() {
         return new VerificationCode(faker.numerify("######"));
     }
